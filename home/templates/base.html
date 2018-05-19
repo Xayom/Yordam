@@ -1,0 +1,227 @@
+{% load staticfiles %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <title>
+        {% block title %}
+        {% endblock %}
+    </title>
+    <link rel="shortcut icon" href="{% static "img/favicon.png" %}" type="image/x-icon">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+    <!-- Bootstrap core CSS -->
+    <link href="{% static "css/bootstrap.css" %}" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css?family=Roboto|Roboto+Condensed|Roboto+Slab" rel="stylesheet">
+    <!-- Material Design Bootstrap -->
+    <link href="{% static "css/mdb.css" %}" rel="stylesheet">
+    <!-- Your custom styles (optional) -->
+    <link href="{% static "css/style.css" %}" rel="stylesheet">
+</head>
+
+<body class="grey lighten-3">
+
+    <!--Main Navigation-->
+    <header>
+    <div class="modal fade" id="modalLoginForm" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header text-center">
+                    <h4 class="modal-title w-100 font-weight-bold">Авторизация</h4>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <form action="" method="post">
+                    {% csrf_token %}
+                    {% if form.non_field_errors %}
+                        <ul class='form-errors' style="color: red;">
+                            {% for error in form.non_field_errors %}
+                                <li>{{ error }}</li>
+                            {% endfor %}
+                        </ul>
+                        {% endif %}
+                <div class="modal-body mx-3">
+                    <div class="md-form mb-5">
+                        <i class="fa fa-envelope prefix grey-text"></i>
+                        <input type="text" name='email' class="form-control validate">
+                        <label data-error="wrong" data-success="right">Логин</label>
+                    </div>
+
+                    <div class="md-form mb-4">
+                        <i class="fa fa-lock prefix grey-text"></i>
+                        <input type="password" name = 'password' id="defaultForm-pass" class="form-control validate">
+                        <label data-error="wrong" data-success="right" for="defaultForm-pass">Пароль</label>
+                    </div>
+
+                </div>
+
+                <div class="modal-footer d-flex justify-content-center">
+                        <button type="submit" class="btn success-color" name="LoginButton" value="1">Войти</button>
+                </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+
+        <!-- Navbar -->
+        <nav class="navbar fixed-top navbar-expand-lg navbar-light white scrolling-navbar success-color">
+            <div class="container">
+
+                <!-- Brand -->
+                <a class="navbar-brand waves-effect" href={% url 'home' %}>
+                    <strong class="white-text">Yordam</strong>
+                </a>
+
+                <!-- Collapse -->
+                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
+                    aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+
+                <!-- Links -->
+                <div class="collapse navbar-collapse" id="navbarSupportedContent">
+
+                    <!-- Left -->
+                    <ul class="navbar-nav mr-auto">
+                        <li class="nav-item active">
+                            <a class="nav-link waves-effect white-text" href={% url 'home' %}>Главная
+                                <span class="sr-only">(current)</span>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link waves-effect white-text" href="https://mdbootstrap.com/material-design-for-bootstrap/" target="_blank">Перевозка</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link waves-effect white-text" href="https://mdbootstrap.com/getting-started/" target="_blank">События</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link waves-effect white-text" href="https://mdbootstrap.com/getting-started/" target="_blank">Мемы</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link waves-effect white-text" href="https://mdbootstrap.com/bootstrap-tutorial/" target="_blank">Прочее</a>
+                        </li>
+                    </ul>
+
+                    <ul class="navbar-nav nav-flex-icons">
+                        <li style="margin-right: 6px" class="nav-item">
+                            <a href="{% url 'add' %}" class="nav-link border border-light rounded waves-effect success-color white-text"
+                                >
+                                <i class="fa fa-check"></i>Оставить заявку
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            {% if user.is_authenticated %}
+                                <!--Dropdown primary-->
+                                <div class="dropdown">
+
+                                    <!--Trigger-->
+                                    <div class="avatar mx-auto dropdown-toggle white-text"  id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><img src="{% static "img/ava.png" %}" alt="avatar mx-auto" width="50" height="50" class="rounded-circle img-fluid white-text">
+                                    </div>
+
+                                    <!--Menu-->
+                                    <div class="dropdown-menu dropdown-success">
+                                        <a class="dropdown-item" href="#">Профиль</a>
+                                        <a class="dropdown-item" href="#">Уведомления</a>
+                                        <a class="dropdown-item" href="#">Настройки</a>
+                                        <div class="dropdown-divider"></div>
+                                        <a class="dropdown-item" href={% url 'logout' %}>Выйти</a>
+                                    </div>
+                                </div>
+                                <!--/Dropdown primary-->
+                                </li>
+
+                            {% else %}
+                                <a href="{% url 'login' %}" class="nav-link border border-light rounded waves-effect success-color white-text">
+                                    <i class="fa fa-user-o pr-2"></i>Авторизация
+                                </a>
+                            {% endif %}
+                        </li>
+                    </ul>
+
+                </div>
+
+            </div>
+        </nav>
+        <!-- Navbar -->
+
+    </header>
+    <!--Main Navigation-->
+
+    <!--Main layout-->
+    <main class="mt-5 pt-5">
+        <div class="container">
+            {% block content %}
+            {% endblock content %}
+        </div>
+    </main>
+    <!--Main layout-->
+
+    <!--Footer-->
+    <footer class="page-footer text-center font-small success-color mt-4">
+
+        <hr class="my-4">
+
+        <!-- Social icons -->
+        <div class="pb-4">
+            <a href="https://www.facebook.com/mdbootstrap" target="_blank">
+                <i class="fa fa-facebook mr-3 fa-lg"></i>
+            </a>
+
+            <a href="https://vk.com/" target="_blank">
+                <i class="fa fa-vk mr-3 fa-lg"></i>
+            </a>
+
+            <a href="https://www.youtube.com/watch?v=7MUISDJ5ZZ4" target="_blank">
+                <i class="fa fa-youtube mr-3 fa-lg"></i>
+            </a>
+            <a href="" >
+                <button type="button" class="border border-light rounded waves-effect success-color white-text">Написать Админу</button>
+            </a>
+
+        </div>
+        <!-- Social icons -->
+
+        <!--Copyright-->
+        <div class="footer-copyright py-3">
+            © 2018 Copyright
+        </div>
+        <!--/.Copyright-->
+
+    </footer>
+    <!--/.Footer-->
+
+    <!-- SCRIPTS -->
+    <!-- JQuery -->
+    <script type="text/javascript" src="{% static "js/jquery-3.2.1.min.js" %}"></script>
+    <!-- Bootstrap tooltips -->
+    <script type="text/javascript" src="{% static "js/popper.min.js" %}"></script>
+    <!-- Bootstrap core JavaScript -->
+    <script type="text/javascript" src="{% static "js/bootstrap.min.js" %}"></script>
+    <!-- MDB core JavaScript -->
+    <script type="text/javascript" src="{% static "js/mdb.min.js" %}" ></script>
+    <!-- Initializations -->
+    <script type="text/javascript">
+        $(document).ready(function(){
+            $('#other').hide();
+            $('#id_article_section').on('change', function() {
+                if (this.value == '1' ) {
+                    $('#other').show();
+                }
+                else {
+                    $('#other').hide();
+                }
+            });
+        });
+    </script>
+    <script type="text/javascript">
+        // Animations initialization
+        new WOW().init();
+    </script>
+</body>
+
+</html>

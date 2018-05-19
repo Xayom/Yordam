@@ -1,0 +1,36 @@
+{% extends 'base.html' %}
+
+{% block title %}
+Добавить заявку
+{% endblock %}
+
+{% block content %}
+    <table class="table">
+    <thead>
+        <tr>
+            <th>#</th>
+            <th>Заголовок</th>
+            <th>Дата</th>
+            <th>Пользователь</th>
+            <th>Действия</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for p in post %}
+        <tr>
+            <th scope="row">{{ forloop.counter }}</th>
+            <td><a href={% url 'post:post_detail' p.pk %}> {{ p.post_title }}</a> </td>
+            <td>{{ p.post_date}}</td>
+            <td>{{ p.post_author }}</td>
+            <td>
+                <form action="" method="get">
+                    <button class="btn success-color white-text" name="checked" value="{{ p.id }}"><i class="fa fa-check"></i></button>
+                    <a class="btn success-color white-text" href={% url 'post:post_edit' p.pk %}><i class="fa fa-pencil"></i></a>
+                    <button class = "btn success-color white-text" name="DeleteButton" value="{{ p.id }}"><i class="fa fa-times"></i></button>
+                </form>
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% endblock %}

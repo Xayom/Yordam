@@ -1,0 +1,104 @@
+{% extends 'base.html' %}
+{% load staticfiles %}
+
+{% block title %}
+    {{ post.post_title }}
+{% endblock %}
+
+{% block content %}
+    <div class="row mb-4 wow fadeIn">
+                <div class="col-md-8">
+                    <!-- Blog Post -->
+                      <div class="card mb-1">
+                        <img class="card-img-top" src="{{ post.post_photo.url }}" alt="Card image cap">
+                        <div class="card-body">
+                            {% if user.is_authenticated and user == post.post_author %}
+                                    <a class="btn float-right success-color white-text" href={% url 'post:post_edit' post.id %}><i class="fa fa-pencil"></i></a>
+                            {% endif %}
+                            <small class="text-muted float-right">{{ post.post_date }} </small>
+
+                            <ul class="list-inline mb-0">
+                                <li class="list-inline-item m-0">
+                                    <div class="avatar mx-auto white"><img src="{% static "img/ava.png" %}" alt="avatar mx-auto white" width="50" height="50" class="rounded-circle img-fluid">
+                                    </div>
+                                </li>
+                                <li class="list-inline-item m-0"><a class="" href=""><strong>{{ post.post_author }}</strong></a>
+                                </li>
+                            </ul>
+                            <hr>
+                            <div class="row">
+                                <div class="col-md-8">
+                                    <h4 class="card-title"> <strong><a href="{% url 'post:post_detail' post.id %}"> {{ post.post_title }} </a> </strong></h4>
+                                </div>
+                            </div>
+                          <p class="card-text">{{ post.post_content }} </p>
+
+                        </div>
+                        <div class="card-footer">
+                          <a href="#" class="btn success-color">Комментировать &rarr;</a>
+                        </div>
+                      </div>
+                <h2 style="margin-top: 50px">Комментарии</h2>
+                {% for comment in comments %}
+                    <div class="card mb-2">
+                        <div class="card-body">
+                            {% if user.is_authenticated and user == comment.author_id %}
+                                <form action="" method="get">
+                                <button  onclick="clicked(event)" class = "success-color float-right" name="DeleteComment" value="{{ comment.id }}"><i class="fa fa-times"></i></button>
+                                <script>
+                                    function clicked(e)
+                                    {
+                                        if(!confirm('Вы уверены?'))e.preventDefault();
+                                    }
+                                    </script>
+                                </form>
+                            {% endif %}
+                            <small class="text-muted float-right">{{ comment.pub_date }} </small>
+                            <ul class="list-inline mb-0">
+                                <li class="list-inline-item">
+                            <div class="avatar mx-auto white"><img src="{% static "img/ava.png" %}" alt="avatar mx-auto white" width="50" height="50" class="rounded-circle img-fluid">
+                            </div>
+                                </li>
+
+                                <li class="list-inline-item">
+                                    <strong>{{ comment.author_id.get_full_name|default:comment.author_id.username }}</strong>&nbsp;&nbsp;
+                                </li>
+                            </ul>
+                                    <div class="card-text" style="margin-left: 60px">
+                                    <p>{{ comment.content|safe }}</p>
+                                </div>
+                        </div>
+                        </div>
+                {% endfor %}
+                {% if not form %}
+{#                    <h3 >Написать комментарий</h3>#}
+{#                    <form action="{% url 'post:add_comment' article.id %}" method="post">#}
+{#                    {% csrf_token %}#}
+{#                    {% form %}#}
+{#                        <button type="submit" class="btn btn-primary">Комментировать</button>#}
+{#                    </form>#}
+
+                {% else %}
+                    <div class="panel panel-warning">
+                        <div class="panel-body">
+                            Только авторизованные пользователи могут оставлять комментарии.<br />
+                        </div>
+                    </div>
+                {% endif %}
+                </div>
+                <div class="col-md-4">
+                    <!-- Search Widget -->
+                      <div class="card my-4">
+                        <h5 class="card-header">Поиск</h5>
+                        <div class="card-body">
+                          <div class="input-group">
+                            <input type="text" class="form-control" placeholder="Искать...">
+                            <span class="input-group-btn">
+                              <button class="btn success-color" type="button">Нажми!</button>
+                            </span>
+                          </div>
+                        </div>
+                      </div>
+                </div>
+            </div>
+{% endblock %}

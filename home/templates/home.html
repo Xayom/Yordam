@@ -1,0 +1,85 @@
+{% extends 'base.html' %}
+{% load staticfiles %}
+
+{% block title %}
+Главная Страница
+{% endblock %}
+
+{% block content %}
+    <!--Cards-->
+            <div class="row mb-4 wow fadeIn">
+
+                <div class="col-md-8">
+                    {% for post in posts %}
+                    <!-- Blog Post -->
+                      <div class="card mb-1" style="margin-top: 25px">
+                          <a href="{% url 'post:post_detail' post.id %}"> <img class="card-img-top" src="media/{{ post.post_photo }}" alt="Card image cap"> </a>
+                        <div class="card-body">
+                            <small class="text-muted float-right">{{ post.post_date }}</small>
+
+                            <ul class="list-inline mb-0">
+                                <li class="list-inline-item m-0">
+                                    <div class="avatar mx-auto white"><img src="{% static "img/ava.png" %}" alt="avatar mx-auto white" width="50" height="50" class="rounded-circle img-fluid">
+                                    </div>
+                                </li>
+                                <li class="list-inline-item m-0"><a class="" href=""><strong>{{ post.post_author }}</strong></a>
+                                </li>
+                            </ul>
+                            <hr>
+                            <div class="row">
+                                <div class="col-md-8">
+                                    <h4 class="card-title" style="font-family: 'Roboto Condensed', sans-serif; margin-left: 10px"> <strong><a href="{% url 'post:post_detail' post.id %}"> {{ post.post_title }} </a> </strong></h4>
+                                </div>
+                            </div>
+                          <p class="card-text" style="font-family: 'Roboto', sans-serif; margin-left: 10px">{{ post.post_content }} </p>
+
+                        </div>
+                        <div class="card-footer">
+                          <a href="#" class="btn success-color">Комментировать &rarr;</a>
+                        </div>
+                      </div>
+                    {% endfor %}
+                </div>
+                <div class="col-md-4">
+                    <!-- Search Widget -->
+                    <div class="card my-4">
+                        <h5 class="card-header success-color white-text">Лучшее за неделю</h5>
+                        <div >
+                          <ul class="list-group">
+                            <li class="list-group-item d-flex justify-content-between align-items-center">
+                                Нужно отправить документы !Срочно
+                                <span class="badge badge-primary badge-pill">14</span>
+                            </li>
+                            <li class="list-group-item d-flex justify-content-between align-items-center">
+                                Концерти Шабнами Сурайё
+                                <span class="badge badge-primary badge-pill">12</span>
+                            </li>
+                            <li class="list-group-item d-flex justify-content-between align-items-center">
+                                Динг динг донг
+                                <span class="badge badge-primary badge-pill">1</span>
+                            </li>
+                        </ul>
+                        </div>
+                      </div>
+                    <div class="card my-4">
+                        <h5 class="card-header success-color white-text">Интересные видео</h5>
+                        <div class="card-body">
+                            <div class="embed-responsive embed-responsive-16by9">
+                                    <iframe class="embed-responsive-item" src="https://www.youtube.com/embed/HhRUCg2BNx8" allowfullscreen></iframe>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card my-4">
+                        <h5 class="card-header success-color white-text">Поиск</h5>
+                        <div class="card-body">
+                          <div class="input-group">
+                            <input type="text" class="form-control" placeholder="Искать...">
+                            <span class="input-group-btn">
+                              <button class="btn success-color" type="button">Нажми!</button>
+                            </span>
+                          </div>
+                        </div>
+                      </div>
+                </div>
+            </div>
+{% endblock content %}

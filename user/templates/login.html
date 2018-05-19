@@ -1,0 +1,25 @@
+{% extends 'base.html' %}
+{% load staticfiles %}
+
+{% block content %}
+<div class="container">
+        <div class="card">
+            <div class="card-body">
+                <h1 align="center">Войти</h1>
+                    <form action="" method="post">
+                      {% csrf_token %}
+                      <!-- as_p для того, чтобы каждый элемент формы был с новой строки -->
+                      {{ form.as_p }}
+                      <p class="font-small grey-text d-flex justify-content-end"><a href="{% url 'register' %}" class="blue-text ml-1"> Забыли Пароль?</a></p>
+                      <div align="center">
+                        <button type="submit" class="btn success-color">Войти</button>
+                      </div>
+                        <div class="modal-footer ">
+                            <h3 class="font-small grey-text d-flex justify-content-end"><a href="{% url 'register' %}" class="blue-text ml-1"> Зарегистрироваться</a></h3>
+                        </div>
+                    </form>
+            </div>
+
+        </div>
+</div>
+{% endblock %}
